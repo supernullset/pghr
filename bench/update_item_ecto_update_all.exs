@@ -6,10 +6,17 @@ IO.puts("Deleting all existing items ...")
 
 Repo.delete_all(Item)
 
-IO.puts("Creating 2_000_000 new items ...")
+
+
+total_items = 100_000
+runtime = 120
+warmup = 30
+parallel = 5
+
+IO.puts("Creating #{total_items} new items ...")
 
 item_ids =
-  Enum.map(1..100_000, fn id ->
+  Enum.map(1..total_items, fn id ->
     {:ok, %{id: id}} =
       Repo.insert(%Item{
         mumble1: "mumble",
