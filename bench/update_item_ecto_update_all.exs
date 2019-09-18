@@ -9,7 +9,7 @@ Repo.delete_all(Item)
 total_items = 100_000
 runtime = 120
 warmup = 30
-parallel = 5
+parallel = 1
 
 IO.puts("Creating #{total_items} new items ...")
 

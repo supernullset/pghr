@@ -1,4 +1,4 @@
-\set random_item_id random(1,5000)
+\set random_item_id random(1,100000)
 \set mumble_random random(1,100000000000000)
 
 UPDATE items

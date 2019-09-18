@@ -6,18 +6,17 @@
 alias Pghr.Item
 alias Pghr.Repo
 
+total_items = 100_000
+IO.puts("Creating #{total_items} new items ...")
 IO.puts("Creating 5,000 new items ...")
-
-_item_ids =
-  Enum.map(1..5000, fn _ ->
-    random = :rand.uniform(100_000_000_000_000)
-
-    {:ok, %{id: id}} =
-      Repo.insert(%Item{
-        mumble1: "mumble",
-        mumble2: "Mumble-#{random}",
-        mumble3: "Moar Mumble #{random}"
-      })
-
-    id
-  end)
+seed_database_sql = """
+DO $$
+BEGIN
+    FOR id IN 1..#{total_items} LOOP
+        INSERT INTO items (mumble1, mumble2, mumble3)
+        VALUES ('mumble', 'Mumble-' || id, 'Moar Mumble ' || id);
+    END LOOP;
+END; $$
+"""
+Ecto.Adapters.SQL.query!(Repo, "ALTER SEQUENCE items_id_seq RESTART WITH 1;", []);
+Ecto.Adapters.SQL.query!(Repo, seed_database_sql, []);
