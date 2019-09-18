@@ -30,6 +30,28 @@ item_ids = 1..total_items
 item_count = Repo.aggregate(Item, :count, :id)
 |> IO.inspect(label: "item count")
 
+#defmodule UpdateServer do
+#  use GenServer
+#
+#  def start_link(item_size) do
+#    GenServer.start_link(__MODULE__, [item_size])
+#  end
+#
+#  def init(item_size) do
+#    Process.send_after(:run)
+#    {:ok, {1, item_size}}
+#  end
+#
+#  def handle_call(:run, {current_id, total_id}) do
+#    {:ok, _} =
+#      %Item{id: current_id}
+#      |> Ecto.Changeset.change(%{mumble3: "New Mumble #{random}"})
+#      |> Repo.update()
+#    Process.send(:run)
+#    {:ok, {current_id + 1, total_id}}
+#  end
+#end
+
 IO.puts("Starting test ...")
 ParallelBench.run(
   fn ->
