@@ -8,7 +8,6 @@ alias Pghr.Repo
 
 total_items = 100_000
 IO.puts("Creating #{total_items} new items ...")
-IO.puts("Creating 5,000 new items ...")
 seed_database_sql = """
 DO $$
 BEGIN
@@ -18,5 +17,4 @@ BEGIN
     END LOOP;
 END; $$
 """
-Ecto.Adapters.SQL.query!(Repo, "ALTER SEQUENCE items_id_seq RESTART WITH 1;", []);
 Ecto.Adapters.SQL.query!(Repo, seed_database_sql, []);

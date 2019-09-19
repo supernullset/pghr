@@ -39,12 +39,12 @@ import Ecto.Query
 
   def start_run do
     IO.inspect("starting run")
-    start_link({120_000, 100_000, 20})
+    start_link({120_000, 100_000, 10})
   end
 
   def stop_run do
     IO.inspect("halting run")
-    Supervisor.stop(__MODULE__, :brutal_kill)
+    Supervisor.stop(__MODULE__, :normal)
 
     item_count = Repo.aggregate(Item, :count, :id)
     |> IO.inspect(label: "item count")
