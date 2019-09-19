@@ -3,6 +3,7 @@ defmodule Pghr.ThroughputWorker do
 
   alias Pghr.Item
   alias Pghr.Repo
+  import Ecto.Query
 
   def start_link(shard) do
     GenServer.start_link(__MODULE__, shard, [])
@@ -17,11 +18,9 @@ defmodule Pghr.ThroughputWorker do
       random_item_id = Enum.random(shard)
       random = Enum.random(shard)
 
-#      IO.inspect("updating: #{random_item_id}")
-      {:ok, _} =
-        %Item{id: random_item_id}
-        |> Ecto.Changeset.change(%{mumble3: "New Mumble #{random}"})
-        |> Repo.update()
+    {1, _} =
+      from(i in Item, where: i.id == ^random_item_id)
+      |> Repo.update_all(set: [mumble3: "New Mumble #{random}"])
 
       Process.send(self(), :run, [])
       {:noreply, shard}
